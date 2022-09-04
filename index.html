@@ -18,10 +18,20 @@
     <input id="photo" type="file" accept=".jpg" />
     <div id="results"></div>
     <script>
+      function validateFileType() {
+        const selectedFile = document.getElementById("photo").files[0];
+        const fileType = selectedFile.type;
+        return fileType == "image/jpeg";
+      }
       async function loaded(reader) {
         const results = document.getElementById("results");
         results.replaceChildren();
         results.innerText = "Loading...";
+        if (!validateFileType()) {
+          results.innerText = "Please convert your image to a jpeg.";
+          return;
+        }
+
         const response = await fetch(
           "https://hf.space/embed/icappel/groban-detector/+/api/predict",
           {
